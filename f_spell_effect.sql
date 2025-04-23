@@ -4,12 +4,17 @@ CREATE OR REPLACE FUNCTION f_spell_effect(
     p_dice_roll INTEGER
 ) RETURNS NUMERIC AS $$
 DECLARE
+    spell_exists INT; -- Variable to check if the spell exists
     base_effect INT;
     total_attribute_value NUMERIC DEFAULT 0;
     final_effect NUMERIC;
 
     rec RECORD; -- Record to hold the attribute values, generic type
-BEGIN
+BEGIN  
+    SELECT COUNT(*) INTO spell_exists
+    FROM "CharacterSpells" AS assigned_s
+    WHERE assigned_s.spell_id = p_spell_id AND assigned_s.character_id = p_caster_id;
+
     -- Get the base effect of the spell
     SELECT sp.base_effect
         INTO base_effect
