@@ -23,20 +23,43 @@ INSERT INTO "SpellCategories" (id, name, base_cost, description) VALUES
 (2, 'Healing', 15, 'Healing spells restore health to the target.');
 
 INSERT INTO "Spells" (id, name, category_id, base_effect, effect_type, description) VALUES
+-- id: 1
+-- name: Fireball
+-- category_id: 1 (Magic Bolt)
+-- base_effect: 30 (damage)
+-- effect_type: damage
 (1, 'Fireball', 1, 30, 'damage', 'Fireball is a powerful spell that deals fire damage to all enemies in a radius.'),
 (2, 'Heal', 2, 20, 'healing', 'Heal is a spell that restores health to a single target.');
 
+-- CharacterSpells
+INSERT INTO "CharacterSpells" (character_id, spell_id) VALUES
+(1, 1),  -- Character 1 has Fireball
+(1, 2);  -- Character 1 has Heal
+
+DELETE FROM "SpellAttributes";
 INSERT INTO "SpellAttributes" (id, spell_id, attribute_id) VALUES
-(1, 1, 1);  -- Fireball depends on Intelligence
+-- id: 1
+-- spell_id: 1 (Fireball)
+-- attribute_id: 1 (Intelligence)
+(1, 1, 1),  -- Fireball depends on Intelligence
+(2, 2, 2),  -- Heal depends on Dexterity
+(3, 1, 2),  -- Fireball also depends on Dexterity
+(4, 2, 1);  -- Heal depends on Intelligence
 
 -- Item
 INSERT INTO "Items" (id, name, description, weight) VALUES 
-(1, 'Ring of Wisdom', 'A ring that increases intelligence.', 0.1);
+(1, 'Ring of Wisdom', 'A ring that increases intelligence.', 0.1),
+(2, 'Cloak of Agility', 'A cloak that increases dexterity.', 0.5),
+(3, 'Necklace of Necromancy', 'A necklace that increases intelligence.', 0.2);
 
 -- Inventory
 INSERT INTO "Inventory" (id, character_id, item_id) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(2, 1, 2), 
+(3, 1, 3); -- Character 1 has all items
 
 -- ItemAttributeModifier
 INSERT INTO "ItemAttributes" (id, item_id, attribute_id, modifier) VALUES
 (1, 1, 1, 5);  -- +5 Intelligence
+(2, 2, 2, 3), -- +3 Dexterity
+(3, 3, 1, 10); -- +10 Intelligence

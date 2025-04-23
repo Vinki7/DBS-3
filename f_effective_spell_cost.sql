@@ -1,40 +1,43 @@
+-- Active: 1740996226560@@localhost@5433@dnd_db
 CREATE OR REPLACE FUNCTION f_effective_spell_cost(
     p_spell_id INTEGER,
     p_caster_id INTEGER
 ) RETURNS NUMERIC AS $$
 DECLARE
-    base_cost NUMERIC;
-    total_attribute_value NUMERIC DEFAULT 0;
-    final_cost NUMERIC DEFAULT 0;
-
-    v_effective_spell_cost NUMERIC DEFAULT 0; -- Variable to hold the effective spell cost
-
-    rec RECORD; -- Record to hold the attribute values, generic type
+    v_effective_cost NUMERIC; -- Variable to hold the effective spell cost
 BEGIN
-    -- Get the base cost of the spell from category
-    WITH base_cost_query AS (
+    WITH spell_validation AS (
+        -- Validate that the spell exists and the caster is valid
+        SELECT COUNT(*) AS spell_exists
+        FROM "CharacterSpells" AS assigned_s
+        WHERE assigned_s.spell_id = p_spell_id AND assigned_s.character_id = p_caster_id
+    ),
+    base_cost_query AS ( -- Get the base cost of the spell from category
         SELECT cat.base_cost
-            INTO base_cost
         FROM "SpellCategories" AS cat
         JOIN "Spells" AS sp ON cat.id = sp.category_id
         WHERE sp.id = p_spell_id
-    )
-    ;
-
-    -- Loop through the attributes that affect the spell and sum their values
-    FOR rec IN
-        SELECT sp_attr.attribute_id -- Get the attribute ID
+    ),
+    attribute_values AS ( -- Get the total attribute value for the caster
+        SELECT COALESCE(SUM(f_attribute_value(p_caster_id, sp_attr.attribute_id)), 0) AS total_value
         FROM "SpellAttributes" AS sp_attr
-        WHERE sp_attr.spell_id = p_spell_id -- Get all attributes for the spell
-    LOOP
-        total_attribute_value := total_attribute_value + f_attribute_value(p_caster_id, rec.attribute_id);
-    END LOOP;
+        WHERE sp_attr.spell_id = p_spell_id
+    )
+    SELECT 
+        CASE
+            WHEN spell_validation.spell_exists = 0
+                THEN NULL
+            ELSE ROUND(
+                base_cost_query.base_cost * (1 - LEAST(80, attribute_values.total_value) / 100),
+                2
+            ) INTO v_effective_cost -- Calculate the effective cost using the formula
+        END
+    FROM base_cost_query, attribute_values, spell_validation
+    WHERE base_cost_query.base_cost IS NOT NULL AND attribute_values.total_value IS NOT NULL;
 
-    final_cost := base_cost * (1 - LEAST(80, total_attribute_value) / 100); -- Calculate the final cost
-
-    RETURN ROUND(final_cost, 2); -- Return the final cost rounded to 2 decimal places
+    RETURN v_effective_cost;
 
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT f_effective_spell_cost(1, 1) AS "Effective Spell Cost"; -- Example call to the function
+SELECT f_effective_spell_cost(2, 1) AS "Effective Spell Cost"; -- Example call to the function
