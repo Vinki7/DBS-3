@@ -1,0 +1,12 @@
+CREATE OR REPLACE FUNCTION f_effective_spell_cost (
+p_spell_id INTEGER ,
+p_caster_id INTEGER
+) RETURNS NUMERIC AS $$
+DECLARE
+v_effective_cost NUMERIC ;
+BEGIN
+-- Compute effective cost using a formula such as :
+-- v_effective_cost := BaseCost * (1 - ( SelectedAttribute / 100) ) ;
+RETURN v_effective_cost ;
+END ;
+$$ LANGUAGE plpgsql ;
