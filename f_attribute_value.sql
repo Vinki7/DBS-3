@@ -21,7 +21,7 @@ BEGIN
     WHERE c.id = p_character_id;
 
     -- Get the class modifier from ClassAttributes
-    SELECT class_attr.modifier 
+    SELECT COALESCE(class_attr.modifier, 1) -- Default to 1 if no modifier found
         INTO class_modifier
     FROM "ClassAttributes" AS class_attr
     WHERE class_attr.class_id = char_class_id AND class_attr.attribute_id = p_attribute_id;
@@ -34,8 +34,9 @@ BEGIN
         ON i.item_id = i_attr.item_id
     WHERE i.character_id = p_character_id AND i_attr.attribute_id = p_attribute_id;
 
-    RETURN (base_value * class_modifier) + item_modifier; -- Calculate the effective attribute value
+    RETURN (base_value * COALESCE(class_modifier, 1)) + item_modifier; -- Calculate the effective attribute value
 END;
 $$ LANGUAGE plpgsql ;
 
-SELECT f_attribute_value(1, 1) AS "Effective attribute value"; -- Example call to the function
+SELECT f_attribute_value(2, 3) AS "Effective attribute value"; -- Example call to the function
+-- 11.5 + 13 = 24.5
