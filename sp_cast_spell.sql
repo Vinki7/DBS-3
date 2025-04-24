@@ -160,6 +160,10 @@ BEGIN
             WHERE cr.combat_id = 1 AND cr.time_ended IS NULL
         ), NULL, 'death', NULL, p_target_id, NULL, 0, 0, NULL, now()
         );
+
+        UPDATE "Characters"
+        SET state = 'Died' -- Update the target's state to died.
+        WHERE id = p_target_id;
 -- ----------------------------------------- Handle item drop -----------------------------------------
         -- Transfer the target's items from Invetory to the CombatItems table and remove them from the Inventory table.
         FOR r_item IN
