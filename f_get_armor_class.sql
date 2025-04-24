@@ -40,4 +40,4 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT f_get_armor_class(1) AS "Armor Class"; -- Example call to the function
+SELECT f_get_armor_class(2) AS "Armor Class"; -- Example call to the function
