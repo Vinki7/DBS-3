@@ -220,7 +220,6 @@ INSERT INTO "CombatParticipants" (character_id, combat_id, act_health, act_actio
 (2, 1, 90, 40),   -- Rogue
 (3, 1, 95, 45),   -- Cleric
 (5, 1, 100, 55),  -- Necromancer
-
 -- Combat 2 Participants
 (6, 2, 80, 40),   -- Wizard
 (7, 2, 85, 35),   -- Rogue

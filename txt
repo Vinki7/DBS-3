@@ -10,3 +10,41 @@ BEGIN
 RETURN v_effective_cost ;
 END ;
 $$ LANGUAGE plpgsql ;
+
+CREATE OR REPLACE FUNCTION f_effective_spell_cost(
+    p_spell_id INTEGER,
+    p_caster_id INTEGER
+) RETURNS NUMERIC AS $$
+DECLARE
+    base_cost NUMERIC;
+    total_attribute_value NUMERIC DEFAULT 0;
+    final_cost NUMERIC DEFAULT 0;
+
+    v_effective_spell_cost NUMERIC DEFAULT 0; -- Variable to hold the effective spell cost
+
+    rec RECORD; -- Record to hold the attribute values, generic type
+BEGIN
+    -- Get the base cost of the spell from category
+    SELECT cat.base_cost
+        INTO base_cost
+    FROM "SpellCategories" AS cat
+    JOIN "Spells" AS sp ON cat.id = sp.category_id
+    WHERE sp.id = p_spell_id;
+    
+    -- Loop through the attributes that affect the spell and sum their values
+    FOR rec IN
+        SELECT sp_attr.attribute_id -- Get the attribute ID
+        FROM "SpellAttributes" AS sp_attr
+        WHERE sp_attr.spell_id = p_spell_id -- Get all attributes for the spell
+    LOOP
+        total_attribute_value := total_attribute_value + f_attribute_value(p_caster_id, rec.attribute_id);
+    END LOOP;
+
+    final_cost := base_cost * (1 - LEAST(80, total_attribute_value) / 100); -- Calculate the final cost
+
+    RETURN ROUND(final_cost, 2); -- Return the final cost rounded to 2 decimal places
+
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT f_effective_spell_cost(1, 1) AS "Effective Spell Cost"; -- Example call to the function

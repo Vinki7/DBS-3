@@ -1,0 +1,2 @@
+docker exec -t serverDBS pg_dump -U postgres -d dnd_db -F c -v -f /tmp/backup_file.dump
+docker cp serverDBS:/tmp/backup_file.dump C:\Users\User\source\dbs\assignment3\backup_file.dump
