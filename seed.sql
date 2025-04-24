@@ -34,12 +34,15 @@ INSERT INTO "SpellAttributes" (id, spell_id, attribute_id) VALUES
 DELETE FROM "Classes";
 INSERT INTO "Classes" (id, name, ap_modifier, ac_modifier, inventory_modifier) VALUES
 (1, 'Wizard', 1.0, 0.9, 1.0),
-(2, 'Rogue', 1.0, 1.0, 1.0);
+(2, 'Rogue', 1.0, 1.1, 1.0);
 
 DELETE FROM "ClassAttributes";
 INSERT INTO "ClassAttributes" (id, class_id, attribute_id, modifier) VALUES
+-- Wizzard
 (1, 1, 1, 1.1),  -- Intelligence modifier for Wizard
-(2, 1, 2, 1.0);  -- Dexterity
+(2, 1, 2, 1.0),  -- Dexterity
+-- Rogue
+(3, 2, 3, 1.15); -- Dexterity
 
 -- ---------------------------- Character Related Tables ----------------------------
 DELETE FROM "Characters";
@@ -49,8 +52,12 @@ INSERT INTO "Characters" (id, state, class_id, experience_points) VALUES
 
 DELETE FROM "CharacterAttributes";
 INSERT INTO "CharacterAttributes" (id, character_id, attribute_id, base_value) VALUES
+-- Character 1 - Wizzard
 (1, 1, 2, 10),  -- INTELLIGENCE
-(2, 1, 3, 5);   -- DEXTERITY
+(2, 1, 3, 5),   -- DEXTERITY
+-- Character 2 - Rogue
+(3, 2, 2, 5), -- INTELLIGENCE
+(4, 2, 3, 10); -- DEXTERITY
 
 DELETE FROM "CharacterSpells";
 INSERT INTO "CharacterSpells" (character_id, spell_id) VALUES
@@ -80,14 +87,19 @@ DELETE FROM "Items";
 INSERT INTO "Items" (id, name, description, weight) VALUES 
 (1, 'Ring of Wisdom', 'A ring that increases intelligence.', 0.1),
 (2, 'Cloak of Agility', 'A cloak that increases dexterity.', 0.5),
-(3, 'Necklace of Necromancy', 'A necklace that increases intelligence.', 0.2);
+(3, 'Necklace of Necromancy', 'A necklace that increases intelligence.', 0.2),
+(4, 'Moon Steel Chest plate', 'A light yet tought chest plate crafted from supperior Moon Steel by Elven Master craftsmith.', 1);
 
 -- Inventory
 DELETE FROM "Inventory";
 INSERT INTO "Inventory" (id, character_id, item_id) VALUES
+-- Character 1
 (1, 1, 1),
 (2, 1, 2), 
-(3, 1, 3); -- Character 1 has all items
+(3, 1, 3),
+-- Character 2
+(4, 2, 2),
+(5, 2, 4); 
 
 -- ItemAttributeModifier
 DELETE FROM "ItemAttributes";
@@ -100,4 +112,7 @@ INSERT INTO "ItemAttributes" (id, item_id, attribute_id, modifier) VALUES
 (4, 2, 3, 3), -- +3 Dexterity
 -- Necklace of Necromancy
 (5, 3, 1, 3), -- +3 Armor
-(6, 3, 2, 10); -- +10 Intelligence
+(6, 3, 2, 10), -- +10 Intelligence
+-- Moon Steel Chest plate
+(7, 4, 1, 20), -- +20 Armor
+(8, 4, 3, 10); -- +10 Dexterity

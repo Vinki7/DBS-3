@@ -1,7 +1,8 @@
 -- Active: 1740996226560@@localhost@5433@dnd_db
 CREATE DATABASE "dnd_db";
 
-CREATE TABLE "Combat" (
+DROP TABLE IF EXISTS "Combats";
+CREATE TABLE "Combats" (
   "id" bigint NOT NULL UNIQUE,
   "act_round_number" int NOT NULL,
   "time_started" TIMESTAMP NOT NULL,
