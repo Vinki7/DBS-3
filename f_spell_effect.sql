@@ -27,7 +27,7 @@ BEGIN
         FROM "SpellAttributes" AS sp_attr
         WHERE sp_attr.spell_id = p_spell_id -- Get all attributes for the spell
     LOOP
-        total_attribute_value := total_attribute_value + f_attribute_value(p_caster_id, rec.attribute_id);
+        total_attribute_value := total_attribute_value + COALESCE(f_attribute_value(p_caster_id, rec.attribute_id), 0);
     END LOOP;
 
     final_effect := base_effect * (1 + (total_attribute_value / (21 - p_dice_roll))); -- Calculate the final effect
@@ -37,3 +37,12 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT f_spell_effect(1, 1, 15) AS "Spell Effect"; -- Example call to the function
+
+
+SELECT COUNT(*)
+FROM "CharacterSpells" AS assigned_s
+WHERE assigned_s.spell_id = 1 AND assigned_s.character_id = 1;
+
+SELECT sp.base_effect
+FROM "Spells" AS sp
+WHERE sp.id = 1;
