@@ -24,6 +24,7 @@ CREATE TABLE "Characters" (
   PRIMARY KEY ("id")
 );
 
+DROP TABLE IF EXISTS "CombatParticipants";
 CREATE TABLE "CombatParticipants" (
   "id" bigint NOT NULL UNIQUE,
   "character_id" bigint NOT NULL,
@@ -111,11 +112,21 @@ CREATE TABLE "SpellCategories" (
   PRIMARY KEY ("id")
 );
 
+DROP TYPE IF EXISTS "action_type_enum";
+CREATE TYPE "action_type_enum" AS ENUM (
+  'cast spell',
+  'collect item',
+  'pass round',
+  'death',
+  'item drop'
+);
+
+DROP TABLE IF EXISTS "Actions";
 CREATE TABLE "Actions" (
   "id" bigint NOT NULL UNIQUE,
   "round_id" bigint NOT NULL,
   "spell_id" bigint,
-  "action_type" VARCHAR(50) NOT NULL,
+  "action_type" action_type_enum NOT NULL,
   "actor_id" bigint,
   "target_id" bigint,
   "item_id" bigint,
