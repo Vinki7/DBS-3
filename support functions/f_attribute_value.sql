@@ -38,5 +38,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql ;
 
-SELECT f_attribute_value(2, 3) AS "Effective attribute value"; -- Example call to the function
--- 11.5 + 13 = 24.5
+SELECT f_attribute_value(2, 4) AS "Effective attribute value"; -- Example call to the function
+
+-- Debugging:
+SELECT char_attr.base_value 
+FROM "CharacterAttributes" AS char_attr
+WHERE char_attr.character_id = 2 AND char_attr.attribute_id = 4; -- 2 character_id, 4 attribute_id - dexterity
+
+SELECT c.class_id 
+FROM "Characters" AS c
+WHERE c.id = 2;
+
+SELECT COALESCE(class_attr.modifier, 1) -- Default to 1 if no modifier found
+FROM "ClassAttributes" AS class_attr
+WHERE class_attr.class_id = 2 AND class_attr.attribute_id = 4;
+
+SELECT COALESCE(SUM(i_attr.modifier), 0)
+FROM "ItemAttributes" AS i_attr
+JOIN "Inventory" AS i 
+    ON i.item_id = i_attr.item_id
+WHERE i.character_id = 2 AND i_attr.attribute_id = 4;
