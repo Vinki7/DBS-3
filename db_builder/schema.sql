@@ -120,10 +120,23 @@ DROP TYPE IF EXISTS "action_type_enum";
 CREATE TYPE "action_type_enum" AS ENUM (
   'cast spell',
   'collect item',
+  'item drop',
   'pass round',
+  'round start',
+  'round end',
+  'combat end',
+  'combat start',
   'death',
-  'item drop'
+  'rest',
+  'join'
 );
+
+ALTER TYPE "action_type_enum" ADD VALUE IF NOT EXISTS 'combat start';
+ALTER TYPE "action_type_enum" ADD VALUE IF NOT EXISTS 'combat end';
+ALTER TYPE "action_type_enum" ADD VALUE IF NOT EXISTS 'round start';
+ALTER TYPE "action_type_enum" ADD VALUE IF NOT EXISTS 'round end';
+ALTER TYPE "action_type_enum" ADD VALUE IF NOT EXISTS 'join';
+ALTER TYPE "action_type_enum" ADD VALUE IF NOT EXISTS 'rest';
 
 DROP TABLE IF EXISTS "Actions";
 CREATE TABLE "Actions" (
