@@ -161,24 +161,26 @@ INSERT INTO "Characters" (state, class_id, experience_points) VALUES
 
 DELETE FROM "CharacterAttributes";
 INSERT INTO "CharacterAttributes" (character_id, attribute_id, base_value) VALUES
--- Armor
-(1, 1, 5), (2, 1, 8), (3, 1, 6), (4, 1, 15), (5, 1, 7),
-(6, 1, 5), (7, 1, 8), (8, 1, 13), (9, 1, 6), (10, 1, 7),
--- Health
-(1, 2, 100), (2, 2, 95), (3, 2, 110), (4, 2, 140), (5, 2, 90),
-(6, 2, 95), (7, 2, 88), (8, 2, 130), (9, 2, 105), (10, 2, 98),
--- Intelligence
-(1, 3, 12), (2, 3, 6), (3, 3, 8), (4, 3, 4), (5, 3, 14),
-(6, 3, 11), (7, 3, 7), (8, 3, 5), (9, 3, 9), (10, 3, 13),
--- Dexterity
-(1, 4, 7), (2, 4, 13), (3, 4, 9), (4, 4, 6), (5, 4, 10),
-(6, 4, 8), (7, 4, 12), (8, 4, 7), (9, 4, 8), (10, 4, 9),
--- Strength
-(1, 5, 10), (2, 5, 8), (3, 5, 7), (4, 5, 12), (5, 5, 9),
-(6, 5, 11), (7, 5, 10), (8, 5, 8), (9, 5, 7), (10, 5, 6),
--- Constitution
-(1, 6, 5), (2, 6, 7), (3, 6, 8), (4, 6, 9), (5, 6, 10),
-(6, 6, 11), (7, 6, 12), (8, 6, 13), (9, 6, 14), (10, 6, 15);
+-- Character 1: Wizard (ID 1)
+(1, 1, 4), (1, 2, 80), (1, 3, 15), (1, 4, 11), (1, 5, 6), (1, 6, 7),
+-- Character 2: Rogue (ID 2)
+(2, 1, 6), (2, 2, 95), (2, 3, 7), (2, 4, 14), (2, 5, 10), (2, 6, 8),
+-- Character 3: Cleric (ID 3)
+(3, 1, 8), (3, 2, 110), (3, 3, 11), (3, 4, 7), (3, 5, 7), (3, 6, 13),
+-- Character 4: Warrior (ID 4)
+(4, 1, 14), (4, 2, 140), (4, 3, 5), (4, 4, 6), (4, 5, 14), (4, 6, 15),
+-- Character 5: Necromancer (ID 5)
+(5, 1, 6), (5, 2, 100), (5, 3, 16), (5, 4, 8), (5, 5, 5), (5, 6, 11),
+-- Character 6: Wizard (ID 6)
+(6, 1, 4), (6, 2, 70), (6, 3, 13), (6, 4, 9), (6, 5, 5), (6, 6, 6),
+-- Character 7: Rogue (ID 7)
+(7, 1, 5), (7, 2, 85), (7, 3, 8), (7, 4, 13), (7, 5, 9), (7, 6, 8),
+-- Character 8: Warrior (ID 8)
+(8, 1, 12), (8, 2, 125), (8, 3, 6), (8, 4, 7), (8, 5, 13), (8, 6, 13),
+-- Character 9: Cleric (ID 9)
+(9, 1, 9), (9, 2, 115), (9, 3, 10), (9, 4, 6), (9, 5, 8), (9, 6, 14),
+-- Character 10: Necromancer (ID 10)
+(10, 1, 7), (10, 2, 105), (10, 3, 14), (10, 4, 9), (10, 5, 6), (10, 6, 12);
 
 DELETE FROM "CharacterSpells";
 INSERT INTO "CharacterSpells" (character_id, spell_id) VALUES
@@ -271,40 +273,40 @@ INSERT INTO "Inventory" (character_id, item_id) VALUES
 -- ItemAttributeModifier
 DELETE FROM "ItemAttributes";
 INSERT INTO "ItemAttributes" (item_id, attribute_id, modifier) VALUES
--- Ring of Wisdom
-(1, 1, 5), -- +5 Armor
-(1, 2, 10), -- +10 Health
-(1, 3, 5), -- +5 Intelligence
--- Cloak of Agility
-(2, 1, 10), -- +10 Armor
-(2, 4, 3), -- +3 Dexterity
--- Necklace of Necromancy
-(3, 1, 3), -- +3 Armor
-(3, 3, 10), -- +10 Intelligence
--- Moon Steel Chest plate
-(4, 1, 20), -- +20 Armor
-(4, 4, 10), -- +10 Dexterity
-(4, 6, 5),  -- +5 Constitution
--- Staff of the Arcane
-(5, 3, 8),  -- +8 Intelligence
--- Boots of Swiftness
-(6, 4, 4),  -- +4 Dexterity
--- Shield of Valor
-(7, 1, 15), -- +15 Armor
--- Tome of Undeath
-(8, 3, 12), -- +12 Intelligence
--- Blessed Robes
-(9, 6, 7),  -- +7 Constitution
-(9, 2, 5),  -- +5 Health
--- Blade of Precision
-(10, 4, 6), -- +6 Dexterity
--- Gauntlets of Might
-(11, 5, 10), -- +10 Strength
--- Pendant of Focus
-(12, 3, 5),  -- +5 Intelligence
-(12, 1, 3),  -- +3 Armor
--- Hunter’s Hood
-(13, 4, 4),  -- +4 Dexterity
--- Battle Greaves
-(14, 6, 6),  -- +6 Constitution
-(14, 1, 10); -- +10 Armor
+-- Ring of Wisdom (caster utility)
+(1, 1, 3),  -- Armor: 3
+(1, 2, 10), -- Health: 10
+(1, 3, 4),  -- Intelligence: 4
+-- Cloak of Agility (rogue/archer pick)
+(2, 1, 5),  -- Armor: 5
+(2, 4, 5),  -- Dexterity: 5
+-- Necklace of Necromancy (glass cannon feel)
+(3, 1, 2),   -- Armor: 2
+(3, 3, 8),   -- Intelligence: 8
+-- Moon Steel Chestplate (tanky hybrid)
+(4, 1, 15), -- Armor: 15
+(4, 4, 6),  -- Dexterity: 6
+(4, 6, 5),  -- Constitution: 5
+-- Staff of the Arcane (pure spellcasting)
+(5, 3, 6),  -- Intelligence: 6
+-- Boots of Swiftness (speed utility)
+(6, 4, 5),  -- Dexterity: 5
+-- Shield of Valor (pure defense)
+(7, 1, 12), -- Armor: 12
+-- Tome of Undeath (too OP before)
+(8, 3, 9),  -- Intelligence: 9
+-- Blessed Robes (support gear)
+(9, 6, 6),  -- Constitution: 6
+(9, 2, 5),  -- Health: 5
+-- Blade of Precision (rogue weapon)
+(10, 4, 7), -- Dexterity: 7
+-- Gauntlets of Might (warrior core)
+(11, 5, 10), -- Strength: 10
+-- Pendant of Focus (caster utility)
+(12, 3, 4),  -- Intelligence: 4
+(12, 1, 2),  -- Armor: 2
+-- Hunter’s Hood (rogue/ranger item)
+(13, 4, 6),  -- Dexterity: 6
+-- Battle Greaves (heavy armor)
+(14, 6, 5),  -- Constitution: 5
+(14, 1, 8);  -- Armor: 8
