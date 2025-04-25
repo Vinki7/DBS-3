@@ -1,5 +1,5 @@
-DROP VIEW IF EXISTS v_combat_actions;
-CREATE OR REPLACE VIEW v_combat_actions AS
+DROP VIEW IF EXISTS cv_combat_actions;
+CREATE OR REPLACE VIEW cv_combat_actions AS
 SELECT 
     a.id AS action_id,
     a.actor_id,

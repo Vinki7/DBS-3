@@ -107,25 +107,4 @@ END ;
 $$ LANGUAGE plpgsql ;
 
 SELECT sp_rest_character(1); -- Test the function with a character ID
-
--- Debugging the function
-SELECT 
-    com.id
-FROM "CombatParticipants" AS cp
-JOIN "Combats" AS com ON cp.combat_id = com.id
-WHERE cp.character_id = 1 AND com.time_ended IS NULL;
-
-INSERT INTO "Actions" (round_id, action_type, ap_cost, effect, action_timestamp)
-VALUES (
-    (SELECT id FROM "CombatRounds" WHERE combat_id = 1 AND time_ended IS NULL),
-    'round end',
-    0,
-    0,
-    NOW()
-);
-
-UPDATE "Characters"
-SET state = 'Resting'
-WHERE id = 1; -- log the action in the combat log
-
-SELECT * FROM v_combat_state;
+;

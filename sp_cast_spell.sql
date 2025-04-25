@@ -51,6 +51,12 @@ BEGIN
         JOIN "Combats" AS c ON cp.combat_id = c.id
     WHERE c.time_ended IS NULL AND cp.character_id = p_target_id;
 
+    IF (SELECT COALESCE(cp.combat_id, -1) 
+        FROM "CombatParticipants" AS cp 
+        WHERE cp.character_id = p_target_id) <> v_combat_id THEN -- Validate that the target is in the same combat
+        RAISE EXCEPTION 'Target not found or not in combat.';
+    END IF;
+
     IF v_target_health IS NULL THEN -- Validate that the target is in combat and has health
         RAISE EXCEPTION 'Target not found or not in combat.';
     END IF;
@@ -186,4 +192,4 @@ BEGIN
 END ;
 $$ LANGUAGE plpgsql ;
 
-SELECT sp_cast_spell(1, 5, 1);
+SELECT sp_cast_spell(1, 8, 1);
