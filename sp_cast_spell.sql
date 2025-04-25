@@ -105,12 +105,8 @@ BEGIN
         WHERE combat_id = v_combat_id AND character_id = p_target_id;
 
         INSERT INTO "Actions"
-            (id, round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
+            (round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
         VALUES (
-            (
-                SELECT COALESCE(MAX(id), 0) + 1
-                FROM "Actions"
-            ),
             (
                 SELECT cr.id
                 FROM "CombatRounds" AS cr
@@ -133,12 +129,8 @@ BEGIN
 
 -- ----------------------------------------- Log the cast -----------------------------------------
     INSERT INTO "Actions" -- Log the spell casting event in the combat log .
-        (id, round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
+        (round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
     VALUES (
-    (
-        SELECT COALESCE(MAX(id), 0) + 1
-        FROM "Actions"
-    ),
     (
         SELECT cr.id
         FROM "CombatRounds" AS cr
@@ -148,12 +140,8 @@ BEGIN
 -- ----------------------------------------- Handle death during cast -----------------------------------------
     IF v_target_health <= 0 THEN -- If the target's health is 0 or less, log the death event.
         INSERT INTO "Actions" -- Log the death event in the combat log .
-            (id, round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
+            (round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
         VALUES (
-        (
-            SELECT COALESCE(MAX(id), 0) + 1
-            FROM "Actions"
-        ),
         (
             SELECT cr.id
             FROM "CombatRounds" AS cr
@@ -185,12 +173,8 @@ BEGIN
             WHERE id = r_item.id;
 
             INSERT INTO "Actions" -- Log the item drop event in the combat log .
-                (id, round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
+                (round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
             VALUES (
-            (
-                SELECT COALESCE(MAX(id), 0) + 1
-                FROM "Actions"
-            ),
             (
                 SELECT cr.id
                 FROM "CombatRounds" AS cr
@@ -202,59 +186,4 @@ BEGIN
 END ;
 $$ LANGUAGE plpgsql ;
 
-SELECT sp_cast_spell(1, 2, 1);
-SELECT f_spell_effect(2, 1, 15);
-
-SELECT LEAST(
-    50 + f_spell_effect(2, 1, 15), 
-    f_attribute_value(
-        1, 
-        (SELECT attr.id
-        FROM "Attributes" AS attr
-        WHERE attr.name = 'Health')
-    )
-);
-
-SELECT * FROM "CombatItems";
-SELECT * FROM "Inventory";
-
-UPDATE "CombatParticipants"
-SET act_health = 50
-WHERE combat_id = 1 AND character_id = 1;
-
-SELECT f_attribute_value(1, 2);
-
-SELECT cp.* FROM "CombatParticipants" AS cp;
-
-SELECT *
-FROM "Actions";
-
-SELECT cp.id, cp.act_health, cp.act_action_points, cp.character_id, cp.combat_id
-FROM "CombatParticipants" AS cp
-JOIN "Combats" AS c ON cp.combat_id = c.id
-WHERE c.time_ended IS NULL AND cp.character_id IN (1, 2);
-
-SELECT
-    s.id AS spell_id,
-    s.effect_type, 
-    f_effective_spell_cost(1, 1) AS cost
-FROM "Spells" AS s
-WHERE s.id = 1;
-
-INSERT INTO "Actions" -- Log the spell casting event in the combat log .
-    (id, round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
-VALUES (
-    (
-        SELECT COALESCE(MAX(id), 0) + 1
-        FROM "Actions"
-    ),
-    (
-        SELECT cr.id
-        FROM "CombatRounds" AS cr
-        WHERE cr.combat_id = 1 AND cr.time_ended IS NULL
-    ), 1, 'cast spell', 1, 2, NULL, f_effective_spell_cost(1, 1), GREATEST((f_spell_effect(1, 1, 15) - f_get_armor_class(2)), 0), 15, now()
-);
-
-SELECT f_spell_effect(1, 1, 15);
-
-SELECT f_get_armor_class(2);
+SELECT sp_cast_spell(1, 5, 1);
