@@ -1,3 +1,6 @@
+DROP VIEW IF EXISTS v_most_damage;
+-- This view provides a summary of the most damaging actions performed by characters in the game.
+-- It aggregates data from the "Actions" table, joining with "Characters", "Classes", and "Spells" to provide a comprehensive view of damage dealt.
 CREATE OR REPLACE VIEW v_most_damage AS
 SELECT
     a.actor_id AS character_id,
@@ -13,3 +16,4 @@ GROUP BY a.actor_id, c.state, cl.name
 ORDER BY total_damage DESC;
 
 SELECT * FROM v_most_damage; -- Example call to the view
+-- Experimental, needs testing and validation

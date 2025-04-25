@@ -1,5 +1,7 @@
 DROP VIEW IF EXISTS v_strongest_characters;
--- -- This view provides a summary of the strongest characters in the game based on damage dealt and remaining health.
+-- -- This view provides a summary of the strongest characters in the game based on damage dealt, remaining health, and combat participation.
+-- -- It aggregates data from the "Actions", "CombatParticipants", and "Characters" tables to present a comprehensive view of character performance.
+-- -- The view includes a performance score that can be customized based on the game's requirements.
 CREATE VIEW v_strongest_characters AS
 SELECT 
     c.id AS character_id,
