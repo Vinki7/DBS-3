@@ -1,7 +1,7 @@
 DROP VIEW IF EXISTS v_character_profile;
 -- This view provides a comprehensive profile of each character, including their attributes, inventory items, and learned spells.
 -- It aggregates data from multiple tables to present a complete picture of the character's status and capabilities.
-CREATE OR REPLACE VIEW v_character_profile AS
+CREATE OR REPLACE VIEW cv_character_profile AS
 SELECT 
     c.id AS character_id,
     c.state,
@@ -50,4 +50,4 @@ LEFT JOIN "CharacterSpells" AS cs ON cs.character_id = c.id
 LEFT JOIN "Spells" AS s ON s.id = cs.spell_id
 GROUP BY c.id, c.state, cl.name, c.experience_points;
 
-SELECT * FROM v_character_profile;
+SELECT * FROM cv_character_profile;
