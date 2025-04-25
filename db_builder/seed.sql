@@ -123,26 +123,26 @@ INSERT INTO "Classes" (name, ap_modifier, ac_modifier, inventory_modifier) VALUE
 DELETE FROM "ClassAttributes";
 INSERT INTO "ClassAttributes" (class_id, attribute_id, modifier) VALUES
 -- Wizard
-(1, 3, 1.2),  -- Intelligence
-(1, 4, 1.0),  -- Dexterity
-(1, 2, 0.9),  -- Health
+(1, 3, 1.25),   -- Intelligence
+(1, 4, 1.05),   -- Dexterity
+(1, 2, 0.85),   -- Health
 -- Rogue
-(2, 4, 1.25), -- Dexterity
-(2, 3, 1.0),  -- Intelligence
-(2, 5, 0.9),  -- Strength
+(2, 4, 1.3),    -- Dexterity
+(2, 3, 0.95),   -- Intelligence
+(2, 5, 1.0),    -- Strength
 -- Cleric
-(3, 3, 1.1),  -- Intelligence
-(3, 6, 1.15), -- Constitution
-(3, 2, 1.05), -- Health
+(3, 3, 1.1),    -- Intelligence
+(3, 6, 1.2),    -- Constitution
+(3, 2, 1.05),   -- Health
 -- Warrior
-(4, 5, 1.3),  -- Strength
-(4, 6, 1.2),  -- Constitution
-(4, 2, 1.1),  -- Health
-(4, 1, 1.1),  -- Armor
+(4, 5, 1.3),    -- Strength
+(4, 6, 1.25),   -- Constitution
+(4, 2, 1.1),    -- Health
+(4, 1, 1.05),   -- Armor
 -- Necromancer
-(5, 3, 1.2),  -- Intelligence
-(5, 2, 1.1),  -- Health
-(5, 1, 0.9);  -- Armor
+(5, 3, 1.25),   -- Intelligence
+(5, 2, 1.0),    -- Health
+(5, 1, 0.85);   -- Armor
 
 -- ---------------------------- Character Related Tables ----------------------------
 DELETE FROM "Characters";
