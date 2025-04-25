@@ -1,4 +1,6 @@
 CREATE OR REPLACE VIEW v_combat_state AS
+-- This view provides a snapshot of the current state of all characters involved in active combats.
+-- It includes details such as the combat ID, character ID, class name, current state, remaining action points, and health.
 SELECT
     cp.combat_id,
     c.id AS character_id,

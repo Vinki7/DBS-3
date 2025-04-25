@@ -40,14 +40,14 @@ SELECT
     ARRAY_AGG(DISTINCT a.name || ': ' || ca.base_value) AS attributes_base,
     ARRAY_AGG(DISTINCT i.name) AS iventory_items,
     ARRAY_AGG(DISTINCT s.name) AS learned_spells
-FROM "Characters" c
-JOIN "Classes" cl ON c.class_id = cl.id
-LEFT JOIN "CharacterAttributes" ca ON ca.character_id = c.id
-LEFT JOIN "Attributes" a ON a.id = ca.attribute_id
+FROM "Characters" AS c
+JOIN "Classes" AS cl ON c.class_id = cl.id
+LEFT JOIN "CharacterAttributes" AS ca ON ca.character_id = c.id
+LEFT JOIN "Attributes" AS a ON a.id = ca.attribute_id
 LEFT JOIN "Inventory" inv ON inv.character_id = c.id
-LEFT JOIN "Items" i ON i.id = inv.item_id
-LEFT JOIN "CharacterSpells" cs ON cs.character_id = c.id
-LEFT JOIN "Spells" s ON s.id = cs.spell_id
+LEFT JOIN "Items" AS i ON i.id = inv.item_id
+LEFT JOIN "CharacterSpells" AS cs ON cs.character_id = c.id
+LEFT JOIN "Spells" AS s ON s.id = cs.spell_id
 GROUP BY c.id, c.state, cl.name, c.experience_points;
 
 SELECT * FROM v_character_profile;
