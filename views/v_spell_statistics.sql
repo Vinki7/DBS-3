@@ -15,3 +15,4 @@ WHERE s.effect_type = 'damage'
 GROUP BY s.id, s.name;
 
 SELECT * FROM v_spell_statistics; -- Example call to the view
+-- Needs to be validated and tested after implementation of all procedures and functions.
