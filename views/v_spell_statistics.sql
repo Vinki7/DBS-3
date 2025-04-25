@@ -7,7 +7,8 @@ SELECT
     s.name AS spell_name,
     COUNT(a.id) AS times_used,
     SUM(a.effect) AS total_effect,
-    AVG(a.effect) AS average_effect
+    AVG(a.effect) AS average_effect,
+    AVG(a.ap_cost) AS average_cost
 FROM "Actions" AS a 
 JOIN "Spells" AS s ON s.id = a.spell_id
 WHERE s.effect_type = 'damage'
