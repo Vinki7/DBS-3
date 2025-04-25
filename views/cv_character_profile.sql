@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS v_character_profile;
+DROP VIEW IF EXISTS cv_character_profile;
 -- This view provides a comprehensive profile of each character, including their attributes, inventory items, and learned spells.
 -- It aggregates data from multiple tables to present a complete picture of the character's status and capabilities.
 CREATE OR REPLACE VIEW cv_character_profile AS
@@ -12,6 +12,7 @@ SELECT
         FROM "Attributes" AS attr
         WHERE attr.name = 'Health'
     )) AS max_health,
+    f_max_ap(c.id) AS max_action_points,
     f_attribute_value(c.id, (
         SELECT attr.id
         FROM "Attributes" AS attr
