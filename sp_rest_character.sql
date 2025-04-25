@@ -63,6 +63,10 @@ BEGIN
     -- log the action in the combat log
     v_act_round_id := (SELECT id FROM "CombatRounds" WHERE combat_id = v_combat_id AND time_ended IS NULL); -- Get the current round ID
 
+    IF v_act_round_id IS NULL THEN
+        RAISE EXCEPTION 'No active round found for combat %', v_combat_id;
+    END IF;
+
     INSERT INTO "Actions" (round_id, actor_id, action_type, ap_cost, effect, action_timestamp)
     VALUES (
         v_act_round_id, p_character_id, 'rest', 0, 0, NOW()
