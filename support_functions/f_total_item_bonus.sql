@@ -1,5 +1,5 @@
 -- Active: 1740996226560@@localhost@5433@dnd_db
-CREATE OR REPLACE FUNCTION get_total_item_bonus(
+CREATE OR REPLACE FUNCTION f_total_item_bonus(
     p_character_id BIGINT, -- Character ID
     p_attribute_id BIGINT -- Attribute ID
 ) RETURNS NUMERIC AS $$
