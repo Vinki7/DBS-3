@@ -123,6 +123,7 @@ CREATE TYPE "action_type_enum" AS ENUM (
   'collect item',
   'item drop',
   'pass round',
+  'continue',
   'round start',
   'round end',
   'combat end',
