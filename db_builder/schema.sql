@@ -1,5 +1,5 @@
 -- Active: 1740996226560@@localhost@5433@dnd_db
-CREATE DATABASE "dnd_db";
+--CREATE DATABASE IF NOT EXISTS dnd_db;
 DROP SCHEMA IF EXISTS "public" CASCADE;
 CREATE SCHEMA IF NOT EXISTS "public";
 
@@ -34,7 +34,8 @@ CREATE TABLE "CombatParticipants" (
   "character_id" bigint NOT NULL,
   "combat_id" bigint NOT NULL,
   "act_health" int NOT NULL,
-  "act_action_points" int NOT NULL
+  "act_action_points" int NOT NULL,
+  "round_passed" BOOLEAN NOT NULL
 );
 
 DROP TABLE IF EXISTS "Inventory";
@@ -178,3 +179,5 @@ CREATE TABLE "CombatRounds" (
   "time_ended" TIMESTAMP,
   "round_number" int NOT NULL
 );
+
+SELECT * FROM "CombatParticipants";

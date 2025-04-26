@@ -217,17 +217,17 @@ INSERT INTO "CombatRounds" (combat_id, time_started, time_ended, round_number) V
 (2, now(), NULL, 1);
 
 DELETE FROM "CombatParticipants";
-INSERT INTO "CombatParticipants" (character_id, combat_id, act_health, act_action_points) VALUES
-(1, 1, 100, 50),  -- Wizard
-(2, 1, 90, 40),   -- Rogue
-(3, 1, 95, 45),   -- Cleric
-(5, 1, 100, 55),  -- Necromancer
+INSERT INTO "CombatParticipants" (character_id, combat_id, act_health, act_action_points, round_passed) VALUES
+(1, 1, 100, 50, FALSE),  -- Wizard
+(2, 1, 90, 40, FALSE),   -- Rogue
+(3, 1, 95, 45, FALSE),   -- Cleric
+(5, 1, 100, 55, FALSE),  -- Necromancer
 -- Combat 2 Participants
-(6, 2, 80, 40),   -- Wizard
-(7, 2, 85, 35),   -- Rogue
-(8, 2, 110, 65),  -- Warrior
-(9, 2, 100, 50),  -- Cleric
-(10, 2, 90, 50);  -- Necromancer
+(6, 2, 80, 40, FALSE),   -- Wizard
+(7, 2, 85, 35, FALSE),   -- Rogue
+(8, 2, 110, 65, FALSE),  -- Warrior
+(9, 2, 100, 50, FALSE),  -- Cleric
+(10, 2, 90, 50, FALSE);  -- Necromancer
 -- ---------------------------- Item Related Tables ----------------------------
 DELETE FROM "Items";
 INSERT INTO "Items" (name, description, weight) VALUES 
@@ -325,3 +325,5 @@ INSERT INTO "ItemAttributes" (item_id, attribute_id, modifier) VALUES
 -- Battle Greaves (heavy armor)
 (14, 6, 5),  -- Constitution: 5
 (14, 1, 8);  -- Armor: 8
+
+SELECT * FROM "Attributes";
