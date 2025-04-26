@@ -108,4 +108,3 @@ END ;
 $$ LANGUAGE plpgsql ;
 
 SELECT sp_rest_character(1); -- Test the function with a character ID
-;
