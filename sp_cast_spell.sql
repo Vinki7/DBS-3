@@ -158,6 +158,8 @@ BEGIN
         UPDATE "Characters"
         SET state = 'Died' -- Update the target's state to died.
         WHERE id = p_target_id;
+
+        SELECT f_change_round_flag(p_target_id, TRUE); -- Call the function to change the round flag for the target.
 -- ----------------------------------------- Handle item drop -----------------------------------------
         -- Transfer the target's items from Invetory to the CombatItems table and remove them from the Inventory table.
         FOR r_item IN

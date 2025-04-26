@@ -55,10 +55,6 @@ BEGIN
     END IF; -- If the character is not the only participant alive, raise an exception 
 
 -- ------------------------------------------------------ End combat ------------------------------------------------------
-    -- Update the character's state to 'resting'
-    UPDATE "Characters"
-    SET state = 'Resting'
-    WHERE id = p_character_id; 
     
     -- log the action in the combat log
     v_act_round_id := (SELECT id FROM "CombatRounds" WHERE combat_id = v_combat_id AND time_ended IS NULL); -- Get the current round ID
@@ -66,6 +62,11 @@ BEGIN
     IF v_act_round_id IS NULL THEN
         RAISE EXCEPTION 'No active round found for combat %', v_combat_id;
     END IF;
+    
+    -- Update the character's state to 'resting'
+    UPDATE "Characters"
+    SET state = 'Resting'
+    WHERE id = p_character_id; 
 
     INSERT INTO "Actions" (round_id, actor_id, action_type, ap_cost, effect, action_timestamp)
     VALUES (
