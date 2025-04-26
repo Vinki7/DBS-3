@@ -179,5 +179,3 @@ CREATE TABLE "CombatRounds" (
   "time_ended" TIMESTAMP,
   "round_number" int NOT NULL
 );
-
-SELECT * FROM "CombatParticipants";
