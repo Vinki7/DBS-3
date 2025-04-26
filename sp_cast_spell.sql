@@ -86,6 +86,8 @@ BEGIN
     SET act_action_points = v_caster_ap -- Update the caster's action points in the database.
     WHERE id = v_caster_participant_id AND combat_id = v_combat_id;
 
+    SELECT f_change_round_flag(p_caster_id, FALSE); -- Call the function to change the round flag for the caster.
+
 -- ----------------------------------------- Perform the cast -----------------------------------------
     v_dice_roll := FLOOR(RANDOM() * 20) + 1; -- Simulate a d20 roll (random number between 1 and 20)
     v_spell_effect := f_spell_effect(p_spell_id, p_caster_id, v_dice_roll); -- Perform a d20 roll and add the relevant attribute bonus.
