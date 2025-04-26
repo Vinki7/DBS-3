@@ -17,16 +17,13 @@ DECLARE
     v_combat_id BIGINT; -- Variable to hold the combat ID
 
     v_effective_cost NUMERIC; -- Variable to hold the effective spell cost
-    v_new_action_points NUMERIC; -- Variable to hold the new action points after casting the spell
 
     v_spell_type VARCHAR; -- Variable to hold the type of spell (e.g., damage, healing)
     v_spell_effect NUMERIC; -- Variable to hold the spell effect value
     v_max_health INTEGER; -- Variable to hold the maximum health of the target
 
-    v_caster_participant_id BIGINT; -- Record to hold the caster's participant details
     v_caster_ap NUMERIC; -- Variable to hold the caster's action points
 
-    v_target_participant_id BIGINT; -- Record to hold the target's participant details
     v_target_health NUMERIC; -- Variable to hold the target's health after applying the spell effect
     v_target_armor_class NUMERIC; -- Variable to hold the target's armor class
 
@@ -34,26 +31,28 @@ DECLARE
 
     r_item RECORD; -- Record to hold the item details (if any)
 BEGIN
--- ----------------------------------------- Gather data ----------------------------------------- 
-    SELECT cp.id, cp.act_action_points, cp.combat_id -- Get the caster's action points and combat ID
-        INTO v_caster_participant_id, v_caster_ap, v_combat_id
+-- ----------------------------------------- Gather data -----------------------------------------
+    IF NOT EXISTS (SELECT 1 FROM "Characters" WHERE id = p_caster_id) THEN -- Validate that the caster exists
+        RAISE EXCEPTION 'Caster with ID % does not exist.', p_caster_id;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM "Characters" WHERE id = p_target_id) THEN -- Validate that the target exists
+        RAISE EXCEPTION 'Target with ID % does not exist.', p_target_id;
+    END IF;
+
+    SELECT cp.act_action_points, cp.combat_id -- Get the caster's action points and combat ID
+        INTO v_caster_ap, v_combat_id
     FROM "CombatParticipants" AS cp
         JOIN "Combats" AS c ON cp.combat_id = c.id
     WHERE c.time_ended IS NULL AND cp.character_id = p_caster_id;
 
-    IF v_caster_ap IS NULL THEN -- Validate that the caster is in combat and has action points
-        RAISE EXCEPTION 'Caster not found or not in combat.';
-    END IF;
-
-    SELECT cp.id, cp.act_health -- Get the target's participant details
-        INTO v_target_participant_id, v_target_health
+    SELECT cp.act_health -- Get the target's health
+        INTO v_target_health
     FROM "CombatParticipants" AS cp
         JOIN "Combats" AS c ON cp.combat_id = c.id
     WHERE c.time_ended IS NULL AND cp.character_id = p_target_id;
 
-    IF (SELECT COALESCE(cp.combat_id, -1) 
-        FROM "CombatParticipants" AS cp 
-        WHERE cp.character_id = p_target_id) <> v_combat_id THEN -- Validate that the target is in the same combat
+    IF NOT EXISTS (SELECT 1 FROM "CombatParticipants" AS cp WHERE cp.character_id = p_target_id AND cp.combat_id = v_combat_id) THEN -- Validate that the target is in the same combat
         RAISE EXCEPTION 'Target not found or not in combat.';
     END IF;
 
@@ -63,6 +62,14 @@ BEGIN
 
     IF v_target_health <= 0 THEN -- Validate that the target is alive
         RAISE EXCEPTION 'Target is dead and cannot be affected by the spell.';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM "Spells" WHERE id = p_spell_id) THEN -- Validate that the spell exists
+        RAISE EXCEPTION 'Spell with ID % does not exist.', p_spell_id;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM "CharacterSpells" WHERE character_id = p_caster_id AND spell_id = p_spell_id) THEN -- Validate that the caster has the spell
+        RAISE EXCEPTION 'Caster does not have the spell with ID %.', p_spell_id;
     END IF;
 
     SELECT s.effect_type -- Get the spell type
@@ -84,7 +91,7 @@ BEGIN
     v_caster_ap := v_caster_ap - v_effective_cost; -- Deduct the appropriate AP from the caster.
     UPDATE "CombatParticipants"
     SET act_action_points = v_caster_ap -- Update the caster's action points in the database.
-    WHERE id = v_caster_participant_id AND combat_id = v_combat_id;
+    WHERE character_id = p_caster_id AND combat_id = v_combat_id;
 
     SELECT f_change_round_flag(p_caster_id, FALSE); -- Call the function to change the round flag for the caster.
 

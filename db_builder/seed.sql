@@ -325,5 +325,3 @@ INSERT INTO "ItemAttributes" (item_id, attribute_id, modifier) VALUES
 -- Battle Greaves (heavy armor)
 (14, 6, 5),  -- Constitution: 5
 (14, 1, 8);  -- Armor: 8
-
-SELECT * FROM "Attributes";

@@ -37,12 +37,3 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT f_spell_effect(1, 1, 15) AS "Spell Effect"; -- Example call to the function
-
-
-SELECT COUNT(*)
-FROM "CharacterSpells" AS assigned_s
-WHERE assigned_s.spell_id = 1 AND assigned_s.character_id = 1;
-
-SELECT sp.base_effect
-FROM "Spells" AS sp
-WHERE sp.id = 1;
