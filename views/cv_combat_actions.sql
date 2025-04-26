@@ -7,6 +7,7 @@ SELECT
     a.target_id,
     a.item_id,
     a.effect,
+    a.dice_roll,
     a.ap_cost,
     a.action_type,
     a.action_timestamp,

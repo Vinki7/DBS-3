@@ -13,6 +13,8 @@ SELECT
         WHERE attr.name = 'Health'
     )) AS max_health,
     f_max_ap(c.id) AS max_action_points,
+    f_max_inventory_weight(c.id) AS max_inventory_weight,
+    f_inventory_weight(c.id) AS current_inventory_weight,
     f_attribute_value(c.id, (
         SELECT attr.id
         FROM "Attributes" AS attr
@@ -39,7 +41,7 @@ SELECT
         WHERE attr.name = 'Constitution'
     )) AS constitution_total,
     ARRAY_AGG(DISTINCT a.name || ': ' || ca.base_value) AS attributes_base,
-    ARRAY_AGG(DISTINCT i.name) AS iventory_items,
+    ARRAY_AGG(i.name) AS iventory_items,
     ARRAY_AGG(DISTINCT s.name) AS learned_spells
 FROM "Characters" AS c
 JOIN "Classes" AS cl ON c.class_id = cl.id
