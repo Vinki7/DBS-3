@@ -231,20 +231,20 @@ INSERT INTO "CombatParticipants" (character_id, combat_id, act_health, act_actio
 -- ---------------------------- Item Related Tables ----------------------------
 DELETE FROM "Items";
 INSERT INTO "Items" (name, description, weight) VALUES 
-('Ring of Wisdom', 'A ring that increases intelligence.', 0.1),
-('Cloak of Agility', 'A cloak that increases dexterity.', 0.5),
-('Necklace of Necromancy', 'A necklace that increases intelligence.', 0.2),
+('Ring of Wisdom', 'A ring that increases intelligence.', 1),
+('Cloak of Agility', 'A cloak that increases dexterity.', 5),
+('Necklace of Necromancy', 'A necklace that increases intelligence.', 2),
 ('Moon Steel Chest plate', 'A light yet tought chest plate crafted from supperior Moon Steel by Elven Master craftsmith.', 1),
-('Staff of the Arcane', 'A magical staff that boosts intelligence and spell power.', 1.2),
-('Boots of Swiftness', 'Light boots that increase dexterity and movement speed.', 0.4),
-('Shield of Valor', 'A sturdy shield that boosts armor significantly.', 2.0),
-('Tome of Undeath', 'A cursed book that increases necromantic power.', 1.5),
-('Blessed Robes', 'Robes blessed by the light, increasing constitution and healing effects.', 0.7),
-('Blade of Precision', 'A sharp dagger that increases dexterity and attack accuracy.', 1.0),
-('Gauntlets of Might', 'Heavy gauntlets that increase strength significantly.', 1.3),
-('Pendant of Focus', 'A mystical pendant that improves intelligence and armor.', 0.3),
-('Hunter’s Hood', 'Camouflaged hood that increases stealth and dexterity.', 0.6),
-('Battle Greaves', 'Steel greaves that improve constitution and armor.', 1.8);
+('Staff of the Arcane', 'A magical staff that boosts intelligence and spell power.', 7),
+('Boots of Swiftness', 'Light boots that increase dexterity and movement speed.', 4),
+('Shield of Valor', 'A sturdy shield that boosts armor significantly.', 20),
+('Tome of Undeath', 'A cursed book that increases necromantic power.', 10),
+('Blessed Robes', 'Robes blessed by the light, increasing constitution and healing effects.', 7),
+('Blade of Precision', 'A sharp dagger that increases dexterity and attack accuracy.', 10),
+('Gauntlets of Might', 'Heavy gauntlets that increase strength significantly.', 15),
+('Pendant of Focus', 'A mystical pendant that improves intelligence and armor.', 3),
+('Hunter’s Hood', 'Camouflaged hood that increases stealth and dexterity.', 6),
+('Battle Greaves', 'Steel greaves that improve constitution and armor.', 15);
 
 -- Inventory
 DELETE FROM "Inventory";
@@ -269,6 +269,21 @@ INSERT INTO "Inventory" (character_id, item_id) VALUES
 (5, 4),  -- Moon Steel Chest plate
 (10, 4), -- Moon Steel Chest plate
 (10, 9); -- Hunter’s Hood
+
+DELETE FROM "CombatItems";
+INSERT INTO "CombatItems" (combat_id, item_id) VALUES 
+(1, 2),  -- Cloak of Agility
+(1, 3),  -- Necklace of Necromancy
+(1, 4),  -- Moon Steel Chest plate
+(1, 5),  -- Staff of the Arcane
+(1, 6),  -- Boots of Swiftness
+(1, 7),  -- Shield of Valor
+(1, 10), -- Blade of Precision
+(2, 1),  -- Ring of Wisdom
+(2, 11), -- Gauntlets of Might
+(2, 12), -- Pendant of Focus
+(2, 13), -- Hunter’s Hood
+(2, 14); -- Battle Greaves
 
 -- ItemAttributeModifier
 DELETE FROM "ItemAttributes";

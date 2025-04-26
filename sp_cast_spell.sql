@@ -116,7 +116,7 @@ BEGIN
             (
                 SELECT cr.id
                 FROM "CombatRounds" AS cr
-                WHERE cr.combat_id = 1 AND cr.time_ended IS NULL
+                WHERE cr.combat_id = v_combat_id AND cr.time_ended IS NULL
             ), p_spell_id, 'cast spell', p_caster_id, p_target_id, NULL, v_effective_cost, v_spell_effect, v_dice_roll, now()
         );
 
@@ -140,7 +140,7 @@ BEGIN
     (
         SELECT cr.id
         FROM "CombatRounds" AS cr
-        WHERE cr.combat_id = 1 AND cr.time_ended IS NULL
+        WHERE cr.combat_id = v_combat_id AND cr.time_ended IS NULL
     ), p_spell_id, 'cast spell', p_caster_id, p_target_id, NULL, v_effective_cost, GREATEST(v_spell_effect - v_target_armor_class, 0), v_dice_roll, now()
     );
 -- ----------------------------------------- Handle death during cast -----------------------------------------
@@ -151,7 +151,7 @@ BEGIN
         (
             SELECT cr.id
             FROM "CombatRounds" AS cr
-            WHERE cr.combat_id = 1 AND cr.time_ended IS NULL
+            WHERE cr.combat_id = v_combat_id AND cr.time_ended IS NULL
         ), NULL, 'death', NULL, p_target_id, NULL, 0, 0, NULL, now()
         );
 
@@ -165,18 +165,14 @@ BEGIN
             FROM "Inventory" AS i
             WHERE i.character_id = p_target_id
         LOOP
-            INSERT INTO "CombatItems" (id, combat_id, item_id)
+            INSERT INTO "CombatItems" (combat_id, item_id)
             VALUES (
-                (
-                    SELECT COALESCE(MAX(id), 0) + 1
-                    FROM "CombatItems"
-                ),
                 v_combat_id,
                 r_item.item_id
             );
 
             DELETE FROM "Inventory"
-            WHERE id = r_item.id;
+            WHERE id = r_item.id AND character_id = p_target_id;
 
             INSERT INTO "Actions" -- Log the item drop event in the combat log .
                 (round_id, spell_id, action_type, actor_id, target_id, item_id, ap_cost, effect, dice_roll, action_timestamp)
@@ -184,7 +180,7 @@ BEGIN
             (
                 SELECT cr.id
                 FROM "CombatRounds" AS cr
-                WHERE cr.combat_id = 1 AND cr.time_ended IS NULL
+                WHERE cr.combat_id = v_combat_id AND cr.time_ended IS NULL
             ), NULL, 'item drop', p_target_id, NULL, r_item.item_id, 0, 0, NULL, now()
             );
         END LOOP;
@@ -192,4 +188,4 @@ BEGIN
 END ;
 $$ LANGUAGE plpgsql ;
 
-SELECT sp_cast_spell(1, 8, 1);
+SELECT sp_cast_spell(1, 5, 1);
