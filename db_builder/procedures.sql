@@ -127,12 +127,14 @@ BEGIN
     FROM ac_modifier; -- Calculate the base armor class value
 
     v_armor_class_value := ROUND(
-        v_armor_class_value + get_total_item_bonus(p_character_id, v_armor_id), -- Add item bonus to the armor class
+        v_armor_class_value + f_total_item_bonus(p_character_id, v_armor_id), -- Add item bonus to the armor class
     2); -- Round the value to 2 decimal places
     
     RETURN v_armor_class_value; -- Return the calculated armor class value
 END;
 $$ LANGUAGE plpgsql;
+
+SELECT sp_cast_spell(1, 2, 1);
 
 -- ----------------------------------------------------- f_inventory_weight.sql -----------------------------------------------------
 CREATE OR REPLACE FUNCTION f_inventory_weight(
@@ -507,6 +509,8 @@ BEGIN
             );
         END LOOP;
     END IF;
+
+    RETURN;
 END ;
 $$ LANGUAGE plpgsql ;
 
@@ -717,11 +721,6 @@ BEGIN
         WHERE combat_id = p_combat_id AND act_health > 0 -- Only include participants with health > 0
     );
 
-    IF v_participant_count = 1 THEN -- Check if the character is the only participant alive
-        SELECT sp_rest_character(character_id);
-        RETURN;
-    END IF;
-
     IF v_participant_count = 0 THEN -- Check if there are any active participants in the combat
         RAISE EXCEPTION 'No active participants found for combat ID %', p_combat_id;
     END IF;
@@ -882,3 +881,5 @@ BEGIN
     RETURN;
 END ;
 $$ LANGUAGE plpgsql ;
+
+SELECT sp_cast_spell(1, 2, 1); -- Example call to the sp_cast_spell function

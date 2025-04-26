@@ -17,4 +17,4 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql ;
 
-SELECT get_total_item_bonus(1, 1) AS "Total Item Bonus"; -- Example call to the function
+SELECT f_total_item_bonus(1, 1) AS "Total Item Bonus"; -- Example call to the function

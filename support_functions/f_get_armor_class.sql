@@ -33,7 +33,7 @@ BEGIN
     FROM ac_modifier; -- Calculate the base armor class value
 
     v_armor_class_value := ROUND(
-        v_armor_class_value + get_total_item_bonus(p_character_id, v_armor_id), -- Add item bonus to the armor class
+        v_armor_class_value + f_total_item_bonus(p_character_id, v_armor_id), -- Add item bonus to the armor class
     2); -- Round the value to 2 decimal places
     
     RETURN v_armor_class_value; -- Return the calculated armor class value
