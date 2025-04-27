@@ -7,6 +7,7 @@
 
 SELECT * FROM v_combat_state WHERE combat_id = 1; -- Získanie stavu boja
 SELECT sp_cast_spell(1, 2, 1); -- Úspešné zoslanie kúzla
+SELECT sp_cast_spell(1, 2, 1); -- Úspešné zoslanie kúzla - v závislosti od hodu kockou v predchádzajúcom kroku, ak neusmrtil oponenta, tento pokus o zoslanie kúzla vyjde.
 SELECT * FROM cv_combat_actions WHERE combat_id = 1; -- Získanie akcií boja
 SELECT * FROM v_combat_state WHERE combat_id = 1; -- Získanie stavu boja
 SELECT * FROM cv_character_profile; -- Oponent má 0 HP a je mŕtvy - state = 'Died'
@@ -20,7 +21,7 @@ SELECT * FROM cv_character_profile; -- Oponent má 0 HP a je mŕtvy - state = 'D
 
 SELECT * FROM cv_combat_actions WHERE combat_id = 1; -- Získanie akcií boja
 SELECT * FROM cv_battleground_loot WHERE combat_id = 1; -- Získanie zoznamu loot predmetov
-SELECT * FROM cv_character_profile WHERE character_id = 1; -- Oponent mŕtvy, predmet dostupný.
+SELECT * FROM cv_character_profile WHERE character_id = 2; -- Oponent mŕtvy, predmet dostupný.
 SELECT sp_loot_item(1, 1, 10); -- Pokus o pickup predmetu, neuspesný pokus, nedostatok miesta v inventári.
 SELECT sp_loot_item(1, 1, 4); -- Pokus o pickup predmetu, úspešný pokus, predmet sa objaví v inventári postavy a je odstránený z bojiska.
 SELECT * FROM cv_battleground_loot WHERE combat_id = 1; -- Získanie zoznamu loot predmetov - zmenený stav.
@@ -107,7 +108,7 @@ SELECT * FROM cv_combat_actions WHERE combat_id = 1; -- Získanie akcií boja
 -- Proces končí s chybou - Combat with ID 1 has already ended.
 SELECT * FROM cv_character_profile WHERE character_id = 4; -- Zobrazenie profilu postavy
 SELECT * FROM v_combat_state; -- Získanie stavu boja
-SELECT sp_enter_combat(1, 4); -- Pokus o pridanie účastníka do boja, neuspesný pokus, účastník je v stave Resting.
+SELECT sp_enter_combat(1, 4); -- Pokus o pridanie účastníka do boja, neuspešný pokus, boj nie je aktívny.
 SELECT * FROM cv_character_profile WHERE character_id = 4; -- Zobrazenie profilu postavy
 
 -- 10th test case
@@ -128,12 +129,10 @@ SELECT * FROM v_combat_state; -- Získanie stavu boja
 -- Účastník je živý, v súboji, nedostatok AP.
 -- Pokus o zoslanie kúzla.
 -- Proces končí s chybou - Not enough action points to cast the spell.
+SELECT sp_cast_spell(4, 8, 14); -- Pokus o zoslanie kúzla - znízenie AP na nízku hodnotu.
 SELECT * FROM v_combat_state; -- Získanie stavu boja
-
-
-
 SELECT * FROM cv_character_profile WHERE character_id = 4; -- Zobrazenie profilu postavy
-SELECT sp_cast_spell(4, 10, 14); -- Pokus o zoslanie kúzla, neuspesný pokus, nedostatok AP.
+SELECT sp_cast_spell(4, 10, 14); -- Pokus o zoslanie kúzla, neuspešný pokus, nedostatok AP.
 SELECT * FROM v_combat_state; -- Získanie stavu boja
 SELECT * FROM cv_combat_actions WHERE combat_id = 2; -- Získanie akcií boja
 
