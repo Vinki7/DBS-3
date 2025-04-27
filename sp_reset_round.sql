@@ -6,6 +6,7 @@ DECLARE
     v_round_number INTEGER; -- Variable to hold the round number
     rec RECORD; -- Record variable to hold the result of the query
     v_participant_count INTEGER; -- Variable to hold the count of participants in the combat
+    v_character_id BIGINT; -- Variable to hold the character ID
 BEGIN
     -- Check if the combat ID is valid
     IF NOT EXISTS (SELECT 1 FROM "Combats" WHERE id = p_combat_id AND time_ended IS NULL) THEN
@@ -26,7 +27,10 @@ BEGIN
     );
 
     IF v_participant_count = 1 THEN -- Check if the character is the only participant alive
-        SELECT sp_rest_character(character_id);
+        SELECT sp_rest_character((
+        SELECT character_id
+        FROM "CombatParticipants" 
+        WHERE combat_id = p_combat_id AND act_health > 0));
         RETURN;
     END IF;
 
@@ -34,7 +38,7 @@ BEGIN
         RAISE EXCEPTION 'No active participants found for combat ID %', p_combat_id;
     END IF;
 
-    IF (SELECT COUNT(*) FROM "CombatParticipants" WHERE combat_id = p_combat_id AND round_passed = FALSE) <> 0 THEN
+    IF (SELECT COUNT(*) FROM "CombatParticipants" WHERE combat_id = p_combat_id AND round_passed = FALSE AND act_health > 0) <> 0 THEN
         RAISE EXCEPTION 'Not all participants have passed the round for combat ID %', p_combat_id;
     END IF;
 
@@ -84,3 +88,7 @@ $$ LANGUAGE plpgsql ;
 SELECT sp_reset_round(1); -- Test the function with a combat ID
 
 SELECT COUNT(*) FROM "CombatParticipants" WHERE combat_id = 1 AND round_passed = FALSE;
+
+SELECT COUNT(*) 
+        FROM "CombatParticipants" 
+        WHERE combat_id = 1 AND act_health > 0;

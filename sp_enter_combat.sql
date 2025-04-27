@@ -42,17 +42,18 @@ IF NOT EXISTS (SELECT 1 FROM "Combats" WHERE id = p_combat_id) THEN -- Check if 
     RAISE EXCEPTION 'Combat with ID % does not exist', p_combat_id;
 END IF;
 
-IF NOT EXISTS (SELECT 1 FROM "Combats" WHERE id = p_combat_id AND time_ended IS NOT NULL) THEN -- Check if the combat is still ongoing
+IF NOT EXISTS (SELECT 1 FROM "Combats" WHERE id = p_combat_id AND time_ended IS NULL) THEN -- Check if the combat is still ongoing
     RAISE EXCEPTION 'Combat with ID % has already ended', p_combat_id;
 END IF;
 
 -- ------------------------------------------------------ Process participant data & state ------------------------------------------------------
-INSERT INTO "CombatParticipants" (character_id, combat_id, act_health, act_action_points) 
+INSERT INTO "CombatParticipants" (character_id, combat_id, act_health, act_action_points, round_passed) 
     VALUES (
         p_character_id, 
         p_combat_id, 
         f_attribute_value(p_character_id, (SELECT id FROM "Attributes" WHERE name = 'Health')), -- Initialize the character's action points (AP), health points (HP), and starting round
-        f_max_ap(P_character_id)
+        f_max_ap(P_character_id),
+        FALSE
     ); -- Create a new combat participant record for the character
 
     

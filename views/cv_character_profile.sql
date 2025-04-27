@@ -41,7 +41,7 @@ SELECT
         WHERE attr.name = 'Constitution'
     )) AS constitution_total,
     ARRAY_AGG(DISTINCT a.name || ': ' || ca.base_value) AS attributes_base,
-    ARRAY_AGG(i.name) AS iventory_items,
+    ARRAY_AGG(DISTINCT i.name) AS iventory_items,
     ARRAY_AGG(DISTINCT s.name) AS learned_spells
 FROM "Characters" AS c
 JOIN "Classes" AS cl ON c.class_id = cl.id
