@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS v_most_damage;
+DROP VIEW IF EXISTS v_combat_damage;
 -- This view provides a summary of the most damaging actions performed by characters in the game.
 -- It aggregates data from the "Actions" table, joining with "Characters", "Classes", and "Spells" to provide a comprehensive view of damage dealt.
 CREATE VIEW v_combat_damage AS

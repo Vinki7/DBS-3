@@ -16,7 +16,8 @@ SELECT
     cr.time_ended AS round_end_time,
     cr.combat_id
 FROM "Actions" AS a
-JOIN "CombatRounds" AS cr ON a.round_id = cr.id;
+JOIN "CombatRounds" AS cr ON a.round_id = cr.id
+ORDER BY cr.combat_id, a.action_timestamp, a.id;
 
-SELECT * FROM v_combat_actions;
+SELECT * FROM cv_combat_actions;
 

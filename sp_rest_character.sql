@@ -3,7 +3,6 @@ CREATE OR REPLACE FUNCTION sp_rest_character(
 ) RETURNS VOID AS $$
 DECLARE
     v_state character_state_enum;
-    v_class_id BIGINT;
     v_combat_id BIGINT;
     v_act_round_id BIGINT;
 BEGIN
@@ -28,7 +27,7 @@ BEGIN
         RAISE EXCEPTION 'Character with ID % does not exist', p_character_id;
     END IF;
 
-    SELECT state, class_id INTO v_state, v_class_id -- Retrieve the character's state and class ID
+    SELECT state INTO v_state -- Retrieve the character's state
     FROM "Characters"
     WHERE id = p_character_id;
 

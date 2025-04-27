@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION sp_reset_round (
-    p_combat_id INTEGER
+    p_combat_id BIGINT
 ) RETURNS VOID AS $$
 DECLARE
     v_round_id BIGINT; -- Variable to hold the round ID

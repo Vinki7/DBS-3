@@ -1,7 +1,7 @@
 -- Active: 1740996226560@@localhost@5433@dnd_db
 CREATE OR REPLACE FUNCTION f_effective_spell_cost(
-    p_spell_id INTEGER,
-    p_caster_id INTEGER
+    p_spell_id BIGINT,
+    p_caster_id BIGINT
 ) RETURNS NUMERIC AS $$
 DECLARE
     v_effective_cost NUMERIC; -- Variable to hold the effective spell cost

@@ -16,4 +16,3 @@ GROUP BY a.actor_id, c.state, cl.name
 ORDER BY total_damage DESC;
 
 SELECT * FROM v_most_damage; -- Example call to the view
--- Experimental, needs testing and validation

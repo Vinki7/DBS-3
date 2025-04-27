@@ -9,9 +9,9 @@
 -- Perform a d20 roll and add the relevant attribute bonus.
 
 CREATE OR REPLACE FUNCTION sp_cast_spell (
-    p_caster_id INTEGER ,
-    p_target_id INTEGER ,
-    p_spell_id INTEGER
+    p_caster_id BIGINT ,
+    p_target_id BIGINT ,
+    p_spell_id BIGINT
 ) RETURNS VOID AS $$
 DECLARE
     v_combat_id BIGINT; -- Variable to hold the combat ID
